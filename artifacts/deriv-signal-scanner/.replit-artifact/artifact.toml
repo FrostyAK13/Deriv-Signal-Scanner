@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Deriv Signal Scanner"
+description = "A standalone responsive Deriv market signal scanner that streams public tick data, explains historical digit and price-movement calculations, and supports controlled iframe embedding."
+version = "1.0.0"
+id = "artifacts/deriv-signal-scanner"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25874
+
+[services.development]
+run = "pnpm --filter @workspace/deriv-signal-scanner run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/deriv-signal-scanner", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/deriv-signal-scanner/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25874"
+BASE_PATH = "/"

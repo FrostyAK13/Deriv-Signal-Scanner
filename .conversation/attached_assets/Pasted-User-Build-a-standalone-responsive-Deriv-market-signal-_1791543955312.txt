@@ -1,0 +1,371 @@
+User: Build a standalone, responsive Deriv market signal scanner that can be hosted independently and embedded in another website with an iframe.
+
+The interface should have:
+- A clear heading: “Deriv Signal Scanner”.
+- A strategy selector with Matches & Differs, Even & Odd, Over & Under, and Rise & Fall.
+- A market selector with Volatility 10, 25, 50, 75, and 100 indices, plus their 1-second variants where supported.
+- An Analyse action, connection status, latest tick/quote, last digit, and a readable analysis/results area.
+- A dark, compact trading-dashboard visual style that works well on phones and desktops.
+
+Implement real-time market data using Deriv’s currently documented public WebSocket API. Verify the current API endpoint, subscription and market-symbol requirements from official documentation rather than guessing. Do not collect or expose API tokens or other secrets for public tick data. Derive the last digit correctly from the quote precision supplied by the API; do not assume every market has the same number of decimal places.
+
+For each strategy, clearly show the historical window and calculation used. Handle loading, invalid selections, empty data, disconnects, reconnects, and API errors visibly. Do not fabricate prices or signals, and do not describe historical frequencies as guaranteed predictions. Label results as informational and include a concise financial-risk disclaimer.
+
+Make the app suitable for deployment as a standalone route (for example, /signals) on Netlify. Configure embedding deliberately: allow only the intended parent origin if the platform supports it, and document any required Content-Security-Policy frame-ancestors or X-Frame-Options settings. Do not weaken unrelated security headers. Add brief setup/deployment instructions and tests for digit precision, strategy calculations, and connection/error states.
+
+Before finishing, run the relevant tests/build, verify the deployed route loads, and verify it can be embedded from the intended parent site. Report any API or hosting configuration that requires manual setup; do not claim it works unless verified.
+
+Copilot: I’ll first locate the intended project workspace, then inspect its existing app structure and hosting setup before implementing the scanner.
+
+List sessions
+Completed with input: {}
+
+Read [](), lines 1 to 35
+Completed with input: {
+  "path": "C:\\Users\\alexo\\AppData\\Local\\Temp\\1791542960452-copilot-tool-output-bbebe6a2623d4ed686e74377534aefce.txt",
+  "view_range": [
+    1,
+    35
+  ]
+}
+
+Read [](), lines 35 to 95
+Completed with input: {
+  "path": "C:\\Users\\alexo\\AppData\\Local\\Temp\\1791542960452-copilot-tool-output-bbebe6a2623d4ed686e74377534aefce.txt",
+  "view_range": [
+    35,
+    95
+  ]
+}
+
+List sessions
+Completed with input: {
+  "workspace": "index-navigator",
+  "createdAfter": "2026-10-01T00:00:00Z",
+  "includeArchived": true
+}
+
+Ask User
+Completed with input: {
+  "question": "Which exact workspace and isolation should I use for the scanner implementation?",
+  "choices": [
+    "C:\\index\\index-navigator — new isolated Git worktree (Recommended)",
+    "C:\\index\\index-navigator — edit the existing folder directly"
+  ]
+}
+
+Scheduled workspace change
+Completed with input: {
+  "workspaceFolder": "C:\\index\\index-navigator",
+  "isolation": true
+}
+
+
+
+**Task completed:**
+
+Workspace selected: C:\index\index-navigator in a new isolated Git worktree. Continuing implementation there.
+
+Copilot: The isolated workspace is ready. I’m checking the app’s existing framework and deployment configuration, while verifying Deriv’s official WebSocket and market-symbol documentation before wiring live ticks.
+
+Ran terminal command: Get-ChildItem -Force | Select-Object Mode,Name
+
+Ran terminal command: git status --short; git branch --show-current
+
+Fetched [https://developers.deriv.com/docs/](https://developers.deriv.com/docs/)
+Completed with input: https://developers.deriv.com/docs/
+
+Ran terminal command: Get-Content package.json
+
+Ran terminal command: Get-ChildItem src -Recurse -File | Select-Object -ExpandProperty FullName; Get-Content vercel.json; Get-Content rsbuild.config.ts
+
+Fetched [https://developers.deriv.com/docs/data/ticks](https://developers.deriv.com/docs/data/ticks)
+Completed with input: https://developers.deriv.com/docs/data/ticks
+
+Fetched [https://developers.deriv.com/docs/data/ticks-history](https://developers.deriv.com/docs/data/ticks-history)
+Completed with input: https://developers.deriv.com/docs/data/ticks-history
+
+Fetched [https://api.deriv.com/docs/](https://api.deriv.com/docs/)
+Completed with input: https://api.deriv.com/docs/
+
+Ran terminal command: Get-ChildItem src -Directory | Select-Object -ExpandProperty Name; Get-ChildItem src -File | Select-Object -ExpandProperty Name; Get-Content src\main.tsx -TotalCount 180; Get-Content rsbuild.config.ts -TotalCount 180; Get-Content vercel.json
+
+Fetched [https://developers.deriv.com/docs/data/active-symbols](https://developers.deriv.com/docs/data/active-symbols)
+Completed with input: https://developers.deriv.com/docs/data/active-symbols
+
+Fetched [https://developers.deriv.com/docs/data/ticks/](https://developers.deriv.com/docs/data/ticks/)
+Completed with input: https://developers.deriv.com/docs/data/ticks/
+
+Fetched [https://developers.deriv.com/docs/data/](https://developers.deriv.com/docs/data/)
+Completed with input: https://developers.deriv.com/docs/data/
+
+"Fetch Web Content" failed
+Completed with input: https://developers.deriv.com/docs/getting-started/
+Tool execution failed: Error: Failed to fetch https://developers.deriv.com/docs/getting-started/ - status code 404
+
+Search for `BrowserRouter|Routes|createBrowserRouter|RouterProvider|AuthWrapper`
+
+Search for `VRTC|1HZ|R_10|R_100|active_symbols|ticks_history|ws.derivws.com`
+
+"Fetch Web Content" failed
+Completed with input: https://developers.deriv.com/docs/websockets/
+Tool execution failed: Error: Failed to fetch https://developers.deriv.com/docs/websockets/ - status code 404
+
+Fetched [https://developers.deriv.com/docs/](https://developers.deriv.com/docs/)
+Completed with input: https://developers.deriv.com/docs/
+
+Fetched [https://developers.deriv.com/docs/data/ticks-history/](https://developers.deriv.com/docs/data/ticks-history/)
+Completed with input: https://developers.deriv.com/docs/data/ticks-history/
+
+Ran terminal command: Get-Content src\app\App.tsx -TotalCount 220; Get-Content src\app\AuthWrapper.tsx -TotalCount 120; Get-Content index.html -TotalCount 100; Get-Content README.md -TotalCount 180
+
+Search for `pip_size|pipSize|ticks_history|ActiveSymbol`
+
+"Fetch Web Content" failed
+Completed with input: https://developers.deriv.com/docs/market-data/
+Tool execution failed: Error: Failed to fetch https://developers.deriv.com/docs/market-data/ - status code 404
+
+"Fetch Web Content" failed
+Completed with input: https://developers.deriv.com/docs/websockets/connection
+Tool execution failed: Error: Failed to fetch https://developers.deriv.com/docs/websockets/connection - status code 404
+
+Fetched [https://api.deriv.com/docs/](https://api.deriv.com/docs/)
+Completed with input: https://api.deriv.com/docs/
+
+"Read" failed
+Completed with input: {
+  "path": "C:\\Users\\alexo\\AppData\\Local\\Temp\\1791543066244-copilot-tool-output-15056-2b9febe1-adb0-4688-be2a-a926790be9fa.txt",
+  "view_range": [
+    1,
+    180
+  ]
+}
+Tool execution failed: Path does not exist
+
+Read []()
+Completed with input: {
+  "path": "C:\\index\\index-navigator.worktrees\\build-a-standalone-responsive-deriv-market-signa\\src\\pages\\matches-hub\\digit-scanner.ts"
+}
+
+Read []()
+Completed with input: {
+  "path": "C:\\index\\index-navigator.worktrees\\build-a-standalone-responsive-deriv-market-signa\\src\\pages\\matches-hub\\digit-scanner.test.ts"
+}
+
+Search for `<Route|path=`
+
+Read [](), lines 1 to 180
+Completed with input: {
+  "path": "C:\\index\\index-navigator.worktrees\\build-a-standalone-responsive-deriv-market-signa\\src\\app\\App.tsx",
+  "view_range": [
+    1,
+    180
+  ]
+}
+
+Read [](), lines 1 to 120
+Completed with input: {
+  "path": "C:\\index\\index-navigator.worktrees\\build-a-standalone-responsive-deriv-market-signa\\src\\app\\AuthWrapper.tsx",
+  "view_range": [
+    1,
+    120
+  ]
+}
+
+Read [](), lines 1 to 170
+Completed with input: {
+  "path": "C:\\index\\index-navigator.worktrees\\build-a-standalone-responsive-deriv-market-signa\\src\\pages\\matches-hub\\index.tsx",
+  "view_range": [
+    1,
+    170
+  ]
+}
+
+Fetched [https://developers.deriv.com/docs/data/ticks](https://developers.deriv.com/docs/data/ticks)
+Completed with input: https://developers.deriv.com/docs/data/ticks
+
+Fetched [https://developers.deriv.com/docs/data/active-symbols](https://developers.deriv.com/docs/data/active-symbols)
+Completed with input: https://developers.deriv.com/docs/data/active-symbols
+
+Search repositories
+Completed with input: {
+  "query": "deriv API documentation WebSocket",
+  "perPage": 5,
+  "minimal_output": true
+}
+
+Search for `netlify|vercel|deriv\.com|NEXT_PUBLIC_DERIV_APP_ID|app_id`
+
+Ran terminal command: Get-Content src\pages\bulk-trader\index.tsx -TotalCount 85; Get-Content jest.config.ts; Get-Content tsconfig.json
+
+Ran terminal command: Get-Content README.md -TotalCount 220; Get-Content jest.config.ts; Get-Content tsconfig.json; Get-Content src\global.d.ts; Get-Content index.html -TotalCount 120
+
+Read tool output
+Completed with input: {
+  "path": "C:\\Users\\alexo\\AppData\\Local\\Temp\\1791543155436-copilot-tool-output-15056-0aacf0ff-149a-4792-8d50-9d99a2e2700f.txt",
+  "view_range": [
+    1,
+    160
+  ]
+}
+
+I found an existing authenticated trading-bot shell, so I’m keeping the scanner deliberately separate at `/signals`; it will use only public market data, dynamically filter markets against Deriv’s active-symbol list, and fail closed on embeds until Netlify has the single approved parent origin configured.
+
+"Apply Patch" failed
+Completed with input: "*** Begin Patch\n*** Update File: src/main.tsx\n@@\n import { configure } from 'mobx';\n+import { lazy, Suspense } from 'react';\n import ReactDOM from 'react-dom/client';\n import { AuthWrapper } from './app/AuthWrapper';\n@@\n // Removed AnalyticsInitializer() call - analytics dependency removed\n \n // App Builder preview branding (incl. PREVIEW_READY handshake) is handled by the\n // src/preview/ listener, mounted from app-content only in the preview deployment\n // (NEXT_PUBLIC_APP_BUILD === 'true') and stripped from standalone partner deploys.\n-ReactDOM.createRoot(document.getElementById('root')!).render(<AuthWrapper />);\n+const root = ReactDOM.createRoot(document.getElementById('root')!);\n+const SignalScanner = lazy(() => import('./pages/signals'));\n+\n+if (window.location.pathname.replace(/\\/+$/, '') === '/signals') {\n+    root.render(\n+        <Suspense fallback={<div className='signal-scanner-loading'>Loading Deriv Signal Scanner…</div>}>\n+            <SignalScanner />\n+        </Suspense>\n+    );\n+} else {\n+    root.render(<AuthWrapper />);\n+}\n*** Add File: src/pages/signals/analysis.ts\n+export const SIGNAL_WINDOW = 100;\n+export const TICK_HISTORY_COUNT = SIGNAL_WINDOW + 1;\n+\n+export type Strategy = 'matches-differs' | 'even-odd' | 'over-under' | 'rise-fall';\n+\n+export type MarketOption = {\n+    symbol: string;\n+    name: string;\n+    precision?: number | string;\n+};\n+\n+export type QuoteTick = {\n+    quote: number | string;\n+    digit?: number;\n+};\n+\n+export type AnalysisMetric = {\n+    label: string;\n+    value: string;\n+};\n+\n+export type StrategyAnalysis = {\n+    title: string;\n+    window: string;\n+    sampleSize: number;\n+    metrics: AnalysisMetric[];\n+    note: string;\n+};\n+\n+export const MARKET_CATALOG: MarketOption[] = [\n+    { name: 'Volatility 10 Index', symbol: 'R_10' },\n+    { name: 'Volatility 25 Index', symbol: 'R_25' },\n+    { name: 'Volatility 50 Index', symbol: 'R_50' },\n+    { name: 'Volatility 75 Index', symbol: 'R_75' },\n+    { name: 'Volatility 100 Index', symbol: 'R_100' },\n+    { name: 'Volatility 10 (1s) Index', symbol: '1HZ10V' },\n+    { name: 'Volatility 25 (1s) Index', symbol: '1HZ25V' },\n+    { name: 'Volatility 50 (1s) Index', symbol: '1HZ50V' },\n+    { name: 'Volatility 75 (1s) Index', symbol: '1HZ75V' },\n+    { name: 'Volatility 100 (1s) Index', symbol: '1HZ100V' },\n+];\n+\n+const getDecimalPlaces = (precision: number | string): number | null => {\n+    const value = Number(precision);\n+    if (!Number.isFinite(value) || value < 0) return null;\n+\n+    if (Number.isInteger(value)) {\n+        return value <= 10 ? value : null;\n+    }\n+\n+    const increment = String(precision);\n+    const decimalPlaces = increment.split('.')[1]?.length ?? 0;\n+    return decimalPlaces > 0 && decimalPlaces <= 10 ? decimalPlaces : null;\n+};\n+\n+export const formatQuote = (quote: number | string, precision?: number | string): string | null => {\n+    if (precision === undefined || precision === null || precision === '') return null;\n+    const decimalPlaces = getDecimalPlaces(precision);\n+    const value = Number(quote);\n+    if (decimalPlaces === null || !Number.isFinite(value)) return null;\n+    return value.toFixed(decimalPlaces);\n+};\n+\n+export const getLastDigit = (quote: number | string, precision?: number | string): number | null => {\n+    const formatted = precision === undefined ? null : formatQuote(quote, precision);\n+    if (formatted === null) return null;\n+    const digits = formatted.replace(/\\D/g, '');\n+    return digits.length ? Number(digits[digits.length - 1]) : null;\n+};\n+\n+export const getAvailableMarkets = (response: unknown): MarketOption[] => {\n+    if (!Array.isArray(response)) return [];\n+    const activeBySymbol = new Map(\n+        response\n+            .filter(\n+                (item): item is Record<string, unknown> =>\n+                    typeof item === 'object' && item !== null && typeof item.symbol === 'string'\n+            )\n+            .map(item => [item.symbol as string, item])\n+    );\n+\n+    return MARKET_CATALOG.flatMap(market => {\n+        const active = activeBySymbol.get(market.symbol);\n+        if (!active) return [];\n+        const precision = active.pip_size ?? active.pip;\n+        return [\n+            {\n+                ...market,\n+                ...(typeof precision === 'number' || typeof precision === 'string' ? { precision } : {}),\n+            },\n+        ];\n+    });\n+};\n+\n+export const getApiError = (message: unknown): string | null => {\n+    if (typeof message !== 'object' || message === null || !('error' in message)) return null;\n+    const error = (message as { error?: { message?: unknown; code?: unknown } }).error;\n+    if (!error || typeof error !== 'object') return 'Deriv returned an unknown market-data error.';\n+    const detail = typeof error.message === 'string' ? error.message : 'Unknown API error';\n+    const code = typeof error.code === 'string' ? `${error.code}: ` : '';\n+    return `${code}${detail}`;\n+};\n+\n+export const reconnectDelay = (attempt: number): number =>\n+    Math.min(1000 * 2 ** Math.max(0, attempt), 30_000);\n+\n+const percent = (count: number, total: number): string =>\n+    total === 0 ? '0.0%' : `${((count / total) * 100).toFixed(1)}%`;\n+\n+export const analyzeStrategy = (strategy: Strategy, ticks: QuoteTick[]): StrategyAnalysis | null => {\n+    const validTicks = ticks.filter(\n+        tick =>\n+            tick &&\n+            tick.digit !== undefined &&\n+            Number.isInteger(tick.digit) &&\n+            tick.digit >= 0 &&\n+            tick.digit <= 9 &&\n+            Number.isFinite(Number(tick.quote))\n+    );\n+\n+    if (strategy === 'rise-fall') {\n+        const transitions = validTicks.slice(-(SIGNAL_WINDOW + 1)).slice(1).reduce(\n+            (result, tick, index, recent) => {\n+                const previous = recent[index - 1];\n+                if (!previous) return result;\n+                const change = Number(tick.quote) - Number(previous.quote);\n+                if (change > 0) result.rises += 1;\n+                else if (change < 0) result.falls += 1;\n+                else result.unchanged += 1;\n+                return result;\n+            },\n+            { rises: 0, falls: 0, unchanged: 0 }\n+        );\n+        const sampleSize = transitions.rises + transitions.falls + transitions.unchanged;\n+        if (sampleSize < SIGNAL_WINDOW) return null;\n+        const directionalTicks = transitions.rises + transitions.falls;\n+        return {\n+            title: 'Rise & Fall',\n+            window: `Last ${SIGNAL_WINDOW} consecutive tick-to-tick changes`,\n+            sampleSize,\n+            metrics: [\n+                { label: 'Rise', value: `${transitions.rises} · ${percent(transitions.rises, directionalTicks)}` },\n+                { label: 'Fall', value: `${transitions.falls} · ${percent(transitions.falls, directionalTicks)}` },\n+                { label: 'Unchanged', value: `${transitions.unchanged} · ${percent(transitions.unchanged, sampleSize)}` },\n+            ],\n+            note: 'Rise/fall percentages use directional changes only; unchanged ticks are reported separately.',\n+        };\n+    }\n+\n+    const recent = validTicks.slice(-SIGNAL_WINDOW);\n+    if (recent.length < SIGNAL_WINDOW) return null;\n+    const sampleSize = recent.length;\n+\n+    if (strategy === 'matches-differs') {\n+        const counts = Array.from({ length: 10 }, (_, digit) => ({\n+            digit,\n+            count: recent.filter(tick => tick.digit === digit).length,\n+        }));\n+        const mostFrequent = [...counts].sort((a, b) => b.count - a.count || a.digit - b.digit)[0];\n+        const leastFrequent = [...counts].sort((a, b) => a.count - b.count || a.digit - b.digit)[0];\n+        return {\n+            title: 'Matches & Differs',\n+            window: `Last ${SIGNAL_WINDOW} tick last-digits`,\n+            sampleSize,\n+            metrics: [\n+                {\n+                    label: 'Most observed digit',\n+                    value: `${mostFrequent.digit} · ${mostFrequent.count}/${sampleSize} (${percent(mostFrequent.count, sampleSize)})`,\n+                },\n+                {\n+                    label: 'Least observed digit',\n+                    value: `${leastFrequent.digit} · ${leastFrequent.count}/${sampleSize} (${percent(leastFrequent.count, sampleSize)})`,\n+                },\n+            ],\n+            note: 'Reports observed digit frequencies only; it does not predict the next digit.',\n+        };\n+    }\n+\n+    const even = recent.filter(tick => tick.digit! % 2 === 0).length;\n+    const odd = sampleSize - even;\n+    if (strategy === 'even-odd') {\n+        return {\n+            title: 'Even & Odd',\n+            window: `Last ${SIGNAL_WINDOW} tick last-digits`,\n+            sampleSize,\n+            metrics: [\n+                { label: 'Even digits (0, 2, 4, 6, 8)', value: `${even} · ${percent(even, sampleSize)}` },\n+                { label: 'Odd digits (1, 3, 5, 7, 9)', value: `${odd} · ${percent(odd, sampleSize)}` },\n+            ],\n+            note: 'Percentages describe this historical window and are not guaranteed outcomes.',\n+        };\n+    }\n+\n+    const over = recent.filter(tick => tick.digit! >= 5).length;\n+    const under = sampleSize - over;\n+    return {\n+        title: 'Over & Under',\n+        window: `Last ${SIGNAL_WINDOW} tick last-digits`,\n+        sampleSize,\n+        metrics: [\n+            { label: 'Over 4 (digits 5–9)', value: `${over} · ${percent(over, sampleSize)}` },\n+            { label: 'Under 5 (digits 0–4)', value: `${under} · ${percent(under, sampleSize)}` },\n+        ],\n+        note: 'Over 4 counts digits 5–9; Under 5 counts digits 0–4.',\n+    };\n+};\n*** Add File: src/pages/signals/index.tsx\n+import { useEffect, useMemo, useRef, useState } from 'react';\n+import {\n+    analyzeStrategy,\n+    formatQuote,\n+    getApiError,\n+    getAvailableMarkets,\n+    getLastDigit,\n+    reconnectDelay,\n+    TICK_HISTORY_COUNT,\n+    type MarketOption,\n+    type QuoteTick,\n+    type Strategy,\n+} from './analysis';\n+import './signals.scss';\n+\n+type ConnectionState = 'connecting' | 'connected' | 'live' | 'reconnecting' | 'error' | 'unsupported';\n+\n+type SocketMessage = {\n+    active_symbols?: Array<Record<string, unknown>>;\n+    history?: { prices?: Array<number | string> };\n+    pip_size?: number | string;\n+    tick?: { symbol?: string; quote?: number | string; pip_size?: number | string };\n+    error?: { message?: string; code?: string };\n+};\n+\n+const STRATEGIES: { value: Strategy; label: string }[] = [\n+    { value: 'matches-differs', label: 'Matches & Differs' },\n+    { value: 'even-odd', label: 'Even & Odd' },\n+    { value: 'over-under', label: 'Over & Under' },\n+    { value: 'rise-fall', label: 'Rise & Fall' },\n+];\n+\n+const APP_ID = process.env.NEXT_PUBLIC_DERIV_APP_ID ?? '';\n+const SOCKET_ENDPOINT = 'wss://ws.derivws.com/websockets/v3';\n+\n+const SignalScanner = () => {\n+    const [strategy, setStrategy] = useState<Strategy>('matches-differs');\n+    const [markets, setMarkets] = useState<MarketOption[]>([]);\n+    const [symbol, setSymbol] = useState('R_100');\n+    const [connection, setConnection] = useState<ConnectionState>('connecting');\n+    const [connectionMessage, setConnectionMessage] = useState('Checking the live market connection…');\n+    const [quote, setQuote] = useState('--');\n+    const [lastDigit, setLastDigit] = useState<number | null>(null);\n+    const [ticks, setTicks] = useState<QuoteTick[]>([]);\n+    const [hasAnalysed, setHasAnalysed] = useState(false);\n+    const [analysisMessage, setAnalysisMessage] = useState('');\n+    const [appIdMissing, setAppIdMissing] = useState(!APP_ID);\n+    const activeSocket = useRef<WebSocket | null>(null);\n+\n+    const selectedMarket = markets.find(market => market.symbol === symbol);\n+    const result = useMemo(() => analyzeStrategy(strategy, ticks), [strategy, ticks]);\n+\n+    useEffect(() => {\n+        document.title = 'Deriv Signal Scanner';\n+        document.body.classList.add('signal-scanner-body');\n+        return () => document.body.classList.remove('signal-scanner-body');\n+    }, []);\n+\n+    useEffect(() => {\n+        let disposed = false;\n+        let attempt = 0;\n+        let timer: ReturnType<typeof setTimeout> | undefined;\n+        let historyPrecision: number | string | undefined;\n+\n+        const connect = () => {\n+            if (disposed) return;\n+            if (!APP_ID.trim()) {\n+                setAppIdMissing(true);\n+                setConnection('error');\n+                setConnectionMessage('A public Deriv app ID is required to request market data. No API token is used.');\n+                return;\n+            }\n+\n+            setAppIdMissing(false);\n+            setConnection(attempt === 0 ? 'connecting' : 'reconnecting');\n+            setConnectionMessage(attempt === 0 ? 'Connecting to Deriv market data…' : 'Reconnecting to Deriv…');\n+            const socket = new WebSocket(`${SOCKET_ENDPOINT}?app_id=${encodeURIComponent(APP_ID)}`);\n+            activeSocket.current = socket;\n+\n+            socket.onopen = () => {\n+                if (disposed) return;\n+                attempt = 0;\n+                setConnection('connected');\n+                setConnectionMessage('Connected — checking available markets…');\n+                socket.send(JSON.stringify({ active_symbols: 'brief', product_type: 'basic', req_id: 1 }));\n+            };\n+\n+            socket.onmessage = event => {\n+                if (disposed) return;\n+                let message: SocketMessage;\n+                try {\n+                    const parsed: unknown = JSON.parse(String(event.data));\n+                    if (typeof parsed !== 'object' || parsed === null) throw new Error('Invalid message format');\n+                    message = parsed as SocketMessage;\n+                } catch {\n+                    setConnection('error');\n+                    setConnectionMessage('Deriv returned an unreadable market-data message.');\n+                    return;\n+                }\n+\n+                const apiError = getApiError(message);\n+                if (apiError) {\n+                    setConnection('error');\n+                    setConnectionMessage(`Deriv API error: ${apiError}`);\n+                    return;\n+                }\n+\n+                if (message.active_symbols) {\n+                    const available = getAvailableMarkets(message.active_symbols);\n+                    setMarkets(available);\n+                    const market = available.find(item => item.symbol === symbol);\n+                    if (!market) {\n+                        setConnection('unsupported');\n+                        setConnectionMessage(\n+                            available.length\n+                                ? 'This market is not currently available. Choose another active Volatility index.'\n+                                : 'Deriv did not return any requested Volatility indices as active markets.'\n+                        );\n+                        return;\n+                    }\n+\n+                    historyPrecision = market.precision;\n+                    socket.send(\n+                        JSON.stringify({\n+                            ticks_history: symbol,\n+                            count: TICK_HISTORY_COUNT,\n+                            end: 'latest',\n+                            style: 'ticks',\n+                            subscribe: 1,\n+                            req_id: 2,\n+                        })\n+                    );\n+                    return;\n+                }\n+\n+                if (message.history?.prices) {\n+                    historyPrecision = message.pip_size ?? historyPrecision;\n+                    const history = message.history.prices\n+                        .map(price => {\n+                            const digit = getLastDigit(price, historyPrecision);\n+                            return digit === null ? null : { quote: price, digit };\n+                        })\n+                        .filter((tick): tick is QuoteTick => tick !== null)\n+                        .slice(-TICK_HISTORY_COUNT);\n+                    setTicks(history);\n+                    const latest = history[history.length - 1];\n+                    if (latest) {\n+                        setQuote(formatQuote(latest.quote, historyPrecision) ?? String(latest.quote));\n+                        setLastDigit(latest.digit ?? null);\n+                        setConnection('live');\n+                        setConnectionMessage('Live market data connected.');\n+                    } else {\n+                        setConnection('error');\n+                        setConnectionMessage(\n+                            message.history.prices.length\n+                                ? 'Quote precision was missing or invalid; waiting for a valid Deriv tick.'\n+                                : 'Deriv returned no historical ticks for this market.'\n+                        );\n+                    }\n+                    return;\n+                }\n+\n+                if (message.tick && message.tick.symbol === symbol && message.tick.quote !== undefined) {\n+                    historyPrecision = message.tick.pip_size ?? historyPrecision;\n+                    const digit = getLastDigit(message.tick.quote, historyPrecision);\n+                    const formatted = formatQuote(message.tick.quote, historyPrecision);\n+                    if (digit === null || formatted === null) {\n+                        setConnection('error');\n+                        setConnectionMessage('Deriv did not supply usable quote precision; the last digit is unavailable.');\n+                        return;\n+                    }\n+                    const latest = { quote: message.tick.quote, digit };\n+                    setQuote(formatted);\n+                    setLastDigit(digit);\n+                    setTicks(current => [...current, latest].slice(-TICK_HISTORY_COUNT));\n+                    setConnection('live');\n+                    setConnectionMessage('Live market data connected.');\n+                }\n+            };\n+\n+            socket.onerror = () => {\n+                if (!disposed) {\n+                    setConnection('reconnecting');\n+                    setConnectionMessage('The Deriv WebSocket encountered a connection error; retrying…');\n+                }\n+            };\n+\n+            socket.onclose = event => {\n+                if (disposed) return;\n+                setConnection('reconnecting');\n+                setConnectionMessage(\n+                    event.reason\n+                        ? `Deriv WebSocket disconnected (${event.reason}); reconnecting…`\n+                        : 'Deriv WebSocket disconnected; reconnecting…'\n+                );\n+                const delay = reconnectDelay(attempt);\n+                attempt += 1;\n+                timer = setTimeout(connect, delay);\n+            };\n+        };\n+\n+        setTicks([]);\n+        setQuote('--');\n+        setLastDigit(null);\n+        setHasAnalysed(false);\n+        setAnalysisMessage('');\n+        connect();\n+\n+        return () => {\n+            disposed = true;\n+            if (timer) clearTimeout(timer);\n+            activeSocket.current?.close();\n+            activeSocket.current = null;\n+        };\n+    }, [symbol]);\n+\n+    const analyse = () => {\n+        if (!selectedMarket || !markets.some(market => market.symbol === symbol)) {\n+            setHasAnalysed(false);\n+            setAnalysisMessage('Choose an active market before analysing.');\n+            return;\n+        }\n+        if (connection !== 'live') {\n+            setHasAnalysed(false);\n+            setAnalysisMessage('Waiting for a live connection and real tick history before analysing.');\n+            return;\n+        }\n+        if (!result) {\n+            setHasAnalysed(false);\n+            setAnalysisMessage(`Not enough live history yet. Collect ${TICK_HISTORY_COUNT} ticks before analysing.`);\n+            return;\n+        }\n+        setHasAnalysed(true);\n+        setAnalysisMessage('');\n+    };\n+\n+    const connectionLabel: Record<ConnectionState, string> = {\n+        connecting: 'Connecting',\n+        connected: 'Connected',\n+        live: 'Live',\n+        reconnecting: 'Reconnecting',\n+        error: 'API error',\n+        unsupported: 'Unavailable',\n+    };\n+\n+    return (\n+        <main className='signal-scanner'>\n+            <div className='signal-scanner__container'>\n+                <header className='signal-scanner__header'>\n+                    <a className='signal-scanner__brand' href='/signals' aria-label='Deriv Signal Scanner home'>\n+                        <span className='signal-scanner__brand-mark' aria-hidden='true'>\n+                            D\n+                        </span>\n+                        <span>DERIV <b>MARKET TOOLS</b></span>\n+                    </a>\n+                    <span className={`signal-scanner__status signal-scanner__status--${connection}`} role='status' aria-live='polite'>\n+                        <span className='signal-scanner__status-dot' aria-hidden='true' />\n+                        {connectionLabel[connection]}\n+                    </span>\n+                </header>\n+\n+                <section className='signal-scanner__intro'>\n+                    <p className='signal-scanner__eyebrow'>LIVE MARKET DATA · INFORMATIONAL ONLY</p>\n+                    <h1>Deriv Signal Scanner</h1>\n+                    <p>Explore recent tick patterns across Deriv Volatility Indices.</p>\n+                </section>\n+\n+                <section className='signal-scanner__panel signal-scanner__controls' aria-label='Scanner settings'>\n+                    <label>\n+                        <span>Strategy</span>\n+                        <select value={strategy} onChange={event => setStrategy(event.target.value as Strategy)}>\n+                            {STRATEGIES.map(item => (\n+                                <option key={item.value} value={item.value}>\n+                                    {item.label}\n+                                </option>\n+                            ))}\n+                        </select>\n+                    </label>\n+                    <label>\n+                        <span>Market</span>\n+                        <select\n+                            value={symbol}\n+                            onChange={event => setSymbol(event.target.value)}\n+                            disabled={!markets.length || connection === 'connecting'}\n+                        >\n+                            {markets.length ? (\n+                                markets.map(market => (\n+                                    <option key={market.symbol} value={market.symbol}>\n+                                        {market.name}\n+                                    </option>\n+                                ))\n+                            ) : (\n+                                <option value='R_100'>Loading available markets…</option>\n+                            )}\n+                        </select>\n+                    </label>\n+                    <button className='signal-scanner__analyse' type='button' onClick={analyse}>\n+                        Analyse <span aria-hidden='true'>→</span>\n+                    </button>\n+                </section>\n+\n+                {connection !== 'live' && (\n+                    <div\n+                        className={`signal-scanner__notice signal-scanner__notice--${connection === 'error' || connection === 'unsupported' ? 'error' : 'pending'}`}\n+                        role={connection === 'error' || connection === 'unsupported' ? 'alert' : 'status'}\n+                        aria-live='polite'\n+                    >\n+                        {connectionMessage}\n+                    </div>\n+                )}\n+                {appIdMissing && (\n+                    <div className='signal-scanner__notice signal-scanner__notice--error' role='alert'>\n+                        Configure the public <code>NEXT_PUBLIC_DERIV_APP_ID</code> build variable to enable Deriv market data.\n+                        Do not add an API token.\n+                    </div>\n+                )}\n+\n+                <section className='signal-scanner__market' aria-label='Latest live market quote'>\n+                    <div>\n+                        <p className='signal-scanner__eyebrow'>SELECTED MARKET</p>\n+                        <h2>{selectedMarket?.name ?? 'Volatility 100 Index'}</h2>\n+                        <span className='signal-scanner__symbol'>{symbol}</span>\n+                    </div>\n+                    <div className='signal-scanner__quote'>\n+                        <span>LATEST TICK</span>\n+                        <strong>{quote}</strong>\n+                    </div>\n+                    <div className='signal-scanner__digit'>\n+                        <span>LAST DIGIT</span>\n+                        <strong>{lastDigit ?? '—'}</strong>\n+                    </div>\n+                </section>\n+\n+                <section className='signal-scanner__panel signal-scanner__results' aria-live='polite'>\n+                    <div className='signal-scanner__results-heading'>\n+                        <div>\n+                            <p className='signal-scanner__eyebrow'>RECENT TICK ANALYSIS</p>\n+                            <h2>{STRATEGIES.find(item => item.value === strategy)?.label}</h2>\n+                        </div>\n+                        {hasAnalysed && result && (\n+                            <span className='signal-scanner__sample'>{result.sampleSize} observations</span>\n+                        )}\n+                    </div>\n+                    {hasAnalysed && result ? (\n+                        <>\n+                            <p className='signal-scanner__window'>\n+                                <span>HISTORICAL WINDOW</span> {result.window}\n+                            </p>\n+                            <div className='signal-scanner__metrics'>\n+                                {result.metrics.map(metric => (\n+                                    <div className='signal-scanner__metric' key={metric.label}>\n+                                        <span>{metric.label}</span>\n+                                        <strong>{metric.value}</strong>\n+                                    </div>\n+                                ))}\n+                            </div>\n+                            <p className='signal-scanner__method'>{result.note}</p>\n+                        </>\n+                    ) : (\n+                        <div className='signal-scanner__empty'>\n+                            <span className='signal-scanner__empty-icon' aria-hidden='true'>\n+                                {result ? '↗' : '···'}\n+                            </span>\n+                            <p>\n+                                {analysisMessage ||\n+                                    (connection === 'live'\n+                                        ? result\n+                                            ? 'Live tick history is ready. Select Analyse to calculate this strategy.'\n+                                            : `Collecting live ticks. ${ticks.length}/${TICK_HISTORY_COUNT} received. No signal is shown until the full historical window is available.`\n+                                        : 'Connect to Deriv and collect real tick history to view the analysis.')}\n+                            </p>\n+                        </div>\n+                    )}\n+                    <p className='signal-scanner__disclaimer'>\n+                        Informational analysis of historical ticks only — frequencies and recent movement do not predict\n+                        or guarantee future outcomes. Trading involves risk; you may lose money.\n+                    </p>\n+                </section>\n+\n+                <footer className='signal-scanner__footer'>\n+                    Data via Deriv’s public market-data WebSocket · No account authorization or API token is requested.\n+                </footer>\n+            </div>\n+        </main>\n+    );\n+};\n+\n+export default SignalScanner;\n*** Add File: src/pages/signals/signals.scss\n+.signal-scanner-body {\n+    min-width: 320px;\n+    min-height: 100vh;\n+    margin: 0;\n+    background: #0c1118;\n+    color: #edf2f7;\n+    font-family:\n+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n+}\n+\n+.signal-scanner-loading {\n+    padding: 32px;\n+    color: #edf2f7;\n+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;\n+}\n+\n+.signal-scanner,\n+.signal-scanner * {\n+    box-sizing: border-box;\n+}\n+\n+.signal-scanner {\n+    min-height: 100vh;\n+    padding: 0 24px 36px;\n+    background:\n+        radial-gradient(ellipse at 50% -25%, rgb(0 207 154 / 10%), transparent 56%),\n+        #0c1118;\n+}\n+\n+.signal-scanner__container {\n+    width: min(100%, 1060px);\n+    margin: 0 auto;\n+}\n+\n+.signal-scanner__header {\n+    display: flex;\n+    align-items: center;\n+    justify-content: space-between;\n+    min-height: 76px;\n+    border-bottom: 1px solid #202a35;\n+}\n+\n+.signal-scanner__brand {\n+    display: inline-flex;\n+    align-items: center;\n+    gap: 11px;\n+    color: #e7edf4;\n+    font-size: 12px;\n+    font-weight: 800;\n+    letter-spacing: 0.09em;\n+    text-decoration: none;\n+}\n+\n+.signal-scanner__brand b {\n+    color: #8793a2;\n+    font-size: 10px;\n+    font-weight: 600;\n+}\n+\n+.signal-scanner__brand-mark {\n+    display: grid;\n+    width: 31px;\n+    height: 31px;\n+    place-items: center;\n+    border: 1px solid #02c894;\n+    border-radius: 9px;\n+    color: #05dfa8;\n+    font-size: 16px;\n+}\n+\n+.signal-scanner__status {\n+    display: inline-flex;\n+    align-items: center;\n+    gap: 8px;\n+    padding: 7px 11px;\n+    border: 1px solid #28343d;\n+    border-radius: 999px;\n+    background: #131b22;\n+    color: #a9b5c1;\n+    font-size: 11px;\n+    font-weight: 650;\n+}\n+\n+.signal-scanner__status--live {\n+    border-color: #145a49;\n+    color: #5ae0b8;\n+}\n+\n+.signal-scanner__status--error,\n+.signal-scanner__status--unsupported {\n+    border-color: #75453e;\n+    color: #ff9d8e;\n+}\n+\n+.signal-scanner__status-dot {\n+    width: 7px;\n+    height: 7px;\n+    border-radius: 50%;\n+    background: #8c98a5;\n+}\n+\n+.signal-scanner__status--live .signal-scanner__status-dot {\n+    background: #10d69e;\n+    box-shadow: 0 0 12px rgb(16 214 158 / 55%);\n+}\n+\n+.signal-scanner__status--error .signal-scanner__status-dot,\n+.signal-scanner__status--unsupported .signal-scanner__status-dot {\n+    background: #f17c6b;\n+}\n+\n+.signal-scanner__intro {\n+    padding: 52px 0 30px;\n+}\n+\n+.signal-scanner__eyebrow {\n+    margin: 0 0 10px;\n+    color: #29d8a6;\n+    font-size: 10px;\n+    font-weight: 750;\n+    letter-spacing: 0.13em;\n+}\n+\n+.signal-scanner__intro h1 {\n+    margin: 0;\n+    color: #f4f7fb;\n+    font-size: clamp(28px, 5vw, 40px);\n+    font-weight: 680;\n+    letter-spacing: -0.045em;\n+}\n+\n+.signal-scanner__intro > p:last-child {\n+    margin: 11px 0 0;\n+    color: #96a3b1;\n+    font-size: 14px;\n+}\n+\n+.signal-scanner__panel {\n+    border: 1px solid #25313b;\n+    border-radius: 13px;\n+    background: linear-gradient(145deg, #141c24, #111820);\n+    box-shadow: 0 15px 42px rgb(0 0 0 / 13%);\n+}\n+\n+.signal-scanner__controls {\n+    display: grid;\n+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;\n+    align-items: end;\n+    gap: 16px;\n+    padding: 19px;\n+}\n+\n+.signal-scanner__controls label {\n+    display: grid;\n+    gap: 8px;\n+    min-width: 0;\n+}\n+\n+.signal-scanner__controls label > span {\n+    color: #9ba8b4;\n+    font-size: 11px;\n+    font-weight: 650;\n+}\n+\n+.signal-scanner__controls select {\n+    width: 100%;\n+    min-height: 43px;\n+    padding: 0 36px 0 12px;\n+    border: 1px solid #33414d;\n+    border-radius: 8px;\n+    outline: none;\n+    background-color: #10171e;\n+    color: #e8eef4;\n+    font: inherit;\n+    font-size: 13px;\n+}\n+\n+.signal-scanner__controls select:focus-visible,\n+.signal-scanner__analyse:focus-visible,\n+.signal-scanner__brand:focus-visible {\n+    outline: 2px solid #16d7a1;\n+    outline-offset: 3px;\n+}\n+\n+.signal-scanner__controls select:disabled {\n+    cursor: wait;\n+    opacity: 0.65;\n+}\n+\n+.signal-scanner__analyse {\n+    display: inline-flex;\n+    min-height: 43px;\n+    align-items: center;\n+    justify-content: center;\n+    gap: 15px;\n+    padding: 0 20px;\n+    border: 0;\n+    border-radius: 8px;\n+    background: #0fc795;\n+    color: #071a15;\n+    cursor: pointer;\n+    font: inherit;\n+    font-size: 13px;\n+    font-weight: 760;\n+    transition: background 140ms ease, transform 140ms ease;\n+}\n+\n+.signal-scanner__analyse:hover {\n+    transform: translateY(-1px);\n+    background: #27dfad;\n+}\n+\n+.signal-scanner__notice {\n+    margin-top: 13px;\n+    padding: 12px 15px;\n+    border: 1px solid #574b2e;\n+    border-radius: 9px;\n+    background: #211e17;\n+    color: #e1c988;\n+    font-size: 12px;\n+    line-height: 1.6;\n+}\n+\n+.signal-scanner__notice--error {\n+    border-color: #64413d;\n+    background: #231917;\n+    color: #ffab9d;\n+}\n+\n+.signal-scanner__notice code {\n+    color: #fff0c2;\n+}\n+\n+.signal-scanner__market {\n+    display: grid;\n+    grid-template-columns: minmax(0, 1fr) auto auto;\n+    align-items: center;\n+    gap: 30px;\n+    margin-top: 18px;\n+    padding: 24px 22px;\n+    border: 1px solid #25313b;\n+    border-radius: 13px;\n+    background: #111820;\n+}\n+\n+.signal-scanner__market .signal-scanner__eyebrow {\n+    margin-bottom: 6px;\n+    color: #7f8e9b;\n+    font-size: 9px;\n+}\n+\n+.signal-scanner__market h2 {\n+    margin: 0 0 5px;\n+    font-size: 16px;\n+    font-weight: 650;\n+}\n+\n+.signal-scanner__symbol {\n+    color: #7f8c99;\n+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;\n+    font-size: 11px;\n+}\n+\n+.signal-scanner__quote,\n+.signal-scanner__digit {\n+    display: grid;\n+    gap: 8px;\n+    text-align: right;\n+}\n+\n+.signal-scanner__quote > span,\n+.signal-scanner__digit > span {\n+    color: #7f8c99;\n+    font-size: 9px;\n+    font-weight: 700;\n+    letter-spacing: 0.12em;\n+}\n+\n+.signal-scanner__quote strong {\n+    color: #e9eff5;\n+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;\n+    font-size: 20px;\n+    font-weight: 620;\n+}\n+\n+.signal-scanner__digit strong {\n+    display: grid;\n+    width: 39px;\n+    height: 39px;\n+    place-items: center;\n+    border: 1px solid #1a6a53;\n+    border-radius: 9px;\n+    background: #10251f;\n+    color: #47e2b5;\n+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;\n+    font-size: 20px;\n+}\n+\n+.signal-scanner__results {\n+    margin-top: 18px;\n+    padding: 23px 22px 18px;\n+}\n+\n+.signal-scanner__results-heading {\n+    display: flex;\n+    align-items: center;\n+    justify-content: space-between;\n+    gap: 12px;\n+}\n+\n+.signal-scanner__results-heading .signal-scanner__eyebrow {\n+    margin-bottom: 6px;\n+    color: #7f8e9b;\n+    font-size: 9px;\n+}\n+\n+.signal-scanner__results-heading h2 {\n+    margin: 0;\n+    font-size: 17px;\n+    font-weight: 660;\n+}\n+\n+.signal-scanner__sample {\n+    color: #86939f;\n+    font-size: 11px;\n+}\n+\n+.signal-scanner__window {\n+    margin: 22px 0 14px;\n+    color: #b5c0ca;\n+    font-size: 12px;\n+}\n+\n+.signal-scanner__window span {\n+    margin-right: 8px;\n+    color: #28d5a4;\n+    font-size: 9px;\n+    font-weight: 750;\n+    letter-spacing: 0.1em;\n+}\n+\n+.signal-scanner__metrics {\n+    display: grid;\n+    grid-template-columns: repeat(2, minmax(0, 1fr));\n+    gap: 11px;\n+}\n+\n+.signal-scanner__metric {\n+    display: grid;\n+    gap: 11px;\n+    min-height: 78px;\n+    padding: 14px;\n+    border: 1px solid #27343e;\n+    border-radius: 9px;\n+    background: #10171e;\n+}\n+\n+.signal-scanner__metric span {\n+    color: #8f9ba7;\n+    font-size: 11px;\n+}\n+\n+.signal-scanner__metric strong {\n+    color: #e8eff5;\n+    font-size: 14px;\n+    font-weight: 650;\n+}\n+\n+.signal-scanner__method {\n+    margin: 14px 0 0;\n+    color: #85929e;\n+    font-size: 11px;\n+    line-height: 1.6;\n+}\n+\n+.signal-scanner__empty {\n+    display: flex;\n+    align-items: center;\n+    gap: 13px;\n+    min-height: 118px;\n+    color: #98a5b1;\n+    font-size: 12px;\n+    line-height: 1.7;\n+}\n+\n+.signal-scanner__empty p {\n+    margin: 0;\n+}\n+\n+.signal-scanner__empty-icon {\n+    display: grid;\n+    width: 34px;\n+    height: 34px;\n+    flex: 0 0 auto;\n+    place-items: center;\n+    border: 1px solid #29423d;\n+    border-radius: 9px;\n+    color: #34d7a7;\n+    font-size: 18px;\n+}\n+\n+.signal-scanner__disclaimer {\n+    margin: 18px 0 0;\n+    padding-top: 15px;\n+    border-top: 1px solid #252f38;\n+    color: #9ca7b2;\n+    font-size: 11px;\n+    line-height: 1.65;\n+}\n+\n+.signal-scanner__footer {\n+    padding: 19px 0 0;\n+    color: #667481;\n+    font-size: 10px;\n+    text-align: center;\n+}\n+\n+@media (max-width: 680px) {\n+    .signal-scanner {\n+        padding: 0 15px 28px;\n+    }\n+\n+    .signal-scanner__header {\n+        min-height: 65px;\n+    }\n+\n+    .signal-scanner__brand {\n+        gap: 8px;\n+        font-size: 10px;\n+    }\n+\n+    .signal-scanner__brand b {\n+        font-size: 8px;\n+    }\n+\n+    .signal-scanner__status {\n+        padding: 6px 9px;\n+        font-size: 10px;\n+    }\n+\n+    .signal-scanner__intro {\n+        padding: 38px 0 24px;\n+    }\n+\n+    .signal-scanner__controls {\n+        grid-template-columns: 1fr;\n+        gap: 13px;\n+        padding: 15px;\n+    }\n+\n+    .signal-scanner__analyse {\n+        width: 100%;\n+    }\n+\n+    .signal-scanner__market {\n+        grid-template-columns: minmax(0, 1fr) auto;\n+        gap: 18px 10px;\n+        padding: 19px 16px;\n+    }\n+\n+    .signal-scanner__market > div:first-child {\n+        grid-column: 1 / -1;\n+    }\n+\n+    .signal-scanner__quote {\n+        text-align: left;\n+    }\n+\n+    .signal-scanner__digit {\n+        grid-column: 2;\n+        grid-row: 2;\n+    }\n+\n+    .signal-scanner__results {\n+        padding: 20px 16px 16px;\n+    }\n+}\n+\n+@media (max-width: 390px) {\n+    .signal-scanner__brand b {\n+        display: none;\n+    }\n+\n+    .signal-scanner__metrics {\n+        grid-template-columns: 1fr;\n+    }\n+}\n*** Add File: src/pages/signals/analysis.test.ts\n+import {\n+    analyzeStrategy,\n+    formatQuote,\n+    getApiError,\n+    getAvailableMarkets,\n+    getLastDigit,\n+    reconnectDelay,\n+    SIGNAL_WINDOW,\n+} from './analysis';\n+\n+const makeTicks = (digits: number[]) => digits.map(digit => ({ quote: `12.${digit}`, digit }));\n+\n+describe('quote precision', () => {\n+    it('uses the precision provided by the market data instead of assuming a fixed number of places', () => {\n+        expect(formatQuote(123.4, 2)).toBe('123.40');\n+        expect(getLastDigit(123.4, 2)).toBe(0);\n+        expect(formatQuote(123.456, 3)).toBe('123.456');\n+        expect(getLastDigit(123.456, 3)).toBe(6);\n+        expect(formatQuote(123.456, 0.001)).toBe('123.456');\n+    });\n+\n+    it('does not invent a last digit when quote precision is missing or invalid', () => {\n+        expect(formatQuote(12.34)).toBeNull();\n+        expect(getLastDigit(12.34)).toBeNull();\n+        expect(getLastDigit(12.34, 'not-a-precision')).toBeNull();\n+    });\n+});\n+\n+describe('strategy calculations', () => {\n+    const balanced = Array.from({ length: SIGNAL_WINDOW }, (_, index) => index % 10);\n+\n+    it('reports observed most- and least-frequent digits for Matches & Differs', () => {\n+        const ticks = makeTicks([...Array(30).fill(7), ...Array(70).fill(1)]);\n+        const analysis = analyzeStrategy('matches-differs', ticks);\n+        expect(analysis?.window).toBe(`Last ${SIGNAL_WINDOW} tick last-digits`);\n+        expect(analysis?.metrics[0]).toMatchObject({ label: 'Most observed digit', value: '1 · 70/100 (70.0%)' });\n+        expect(analysis?.metrics[1]).toMatchObject({ label: 'Least observed digit', value: '0 · 0/100 (0.0%)' });\n+    });\n+\n+    it('counts even and odd digits in the last 100 observations', () => {\n+        const analysis = analyzeStrategy('even-odd', makeTicks(balanced));\n+        expect(analysis?.sampleSize).toBe(100);\n+        expect(analysis?.metrics.map(metric => metric.value)).toEqual(['50 · 50.0%', '50 · 50.0%']);\n+    });\n+\n+    it('uses Deriv over-4 (5–9) and under-5 (0–4) digit barriers', () => {\n+        const analysis = analyzeStrategy('over-under', makeTicks(balanced));\n+        expect(analysis?.metrics.map(metric => metric.value)).toEqual(['50 · 50.0%', '50 · 50.0%']);\n+        expect(analysis?.metrics.map(metric => metric.label)).toEqual([\n+            'Over 4 (digits 5–9)',\n+            'Under 5 (digits 0–4)',\n+        ]);\n+    });\n+\n+    it('counts rises, falls, and unchanged ticks across 100 consecutive changes', () => {\n+        const ticks = Array.from({ length: SIGNAL_WINDOW + 1 }, (_, index) => ({\n+            quote: index === 0 ? 10 : index % 3 === 0 ? 10 : index,\n+            digit: index % 10,\n+        }));\n+        const analysis = analyzeStrategy('rise-fall', ticks);\n+        expect(analysis?.window).toBe(`Last ${SIGNAL_WINDOW} consecutive tick-to-tick changes`);\n+        expect(analysis?.sampleSize).toBe(100);\n+        expect(analysis?.metrics.map(metric => metric.label)).toEqual(['Rise', 'Fall', 'Unchanged']);\n+    });\n+\n+    it('withholds analysis until the complete strategy window is available', () => {\n+        expect(analyzeStrategy('matches-differs', makeTicks(balanced.slice(1)))).toBeNull();\n+        expect(analyzeStrategy('rise-fall', makeTicks(balanced))).toBeNull();\n+        expect(analyzeStrategy('even-odd', [])).toBeNull();\n+    });\n+});\n+\n+describe('market data and connection states', () => {\n+    it('lists only supported scanner markets from Deriv active-symbol data', () => {\n+        expect(\n+            getAvailableMarkets([\n+                { symbol: 'R_10', pip: 0.01 },\n+                { symbol: '1HZ100V', pip_size: 2 },\n+                { symbol: 'CRASH1000', pip: 0.01 },\n+            ])\n+        ).toEqual([\n+            { name: 'Volatility 10 Index', symbol: 'R_10', precision: 0.01 },\n+            { name: 'Volatility 100 (1s) Index', symbol: '1HZ100V', precision: 2 },\n+        ]);\n+        expect(getAvailableMarkets(null)).toEqual([]);\n+    });\n+\n+    it('surfaces Deriv API errors and applies capped reconnect backoff', () => {\n+        expect(getApiError({ error: { code: 'InvalidSymbol', message: 'Market not found' } })).toBe(\n+            'InvalidSymbol: Market not found'\n+        );\n+        expect(getApiError({ tick: { quote: 10 } })).toBeNull();\n+        expect(reconnectDelay(0)).toBe(1000);\n+        expect(reconnectDelay(2)).toBe(4000);\n+        expect(reconnectDelay(20)).toBe(30_000);\n+    });\n+});\n*** Add File: netlify.toml\n+[build]\n+  command = \"npm run build\"\n+  publish = \"dist\"\n+\n+[[redirects]]\n+  from = \"/signals/\"\n+  to = \"/signals\"\n+  status = 301\n+  force = true\n+\n+[[redirects]]\n+  from = \"/signals\"\n+  to = \"/index.html\"\n+  status = 200\n+\n+[[edge_functions]]\n+  function = \"signals-frame-policy\"\n+  path = \"/signals\"\n*** Add File: netlify/edge-functions/signals-frame-policy.ts\n+type EdgeContext = {\n+    next: () => Promise<Response>;\n+    env: {\n+        get: (key: string) => string | undefined;\n+    };\n+};\n+\n+export const frameAncestorsPolicy = (configuredOrigin?: string): string => {\n+    if (!configuredOrigin) return \"frame-ancestors 'none'\";\n+\n+    try {\n+        const parent = new URL(configuredOrigin);\n+        const isLocalHttp =\n+            parent.protocol === 'http:' && (parent.hostname === 'localhost' || parent.hostname === '127.0.0.1');\n+        if (\n+            parent.origin !== configuredOrigin ||\n+            (parent.protocol !== 'https:' && !isLocalHttp) ||\n+            parent.username ||\n+            parent.password\n+        ) {\n+            return \"frame-ancestors 'none'\";\n+        }\n+        return `frame-ancestors ${parent.origin}`;\n+    } catch {\n+        return \"frame-ancestors 'none'\";\n+    }\n+};\n+\n+export default async (_request: Request, context: EdgeContext): Promise<Response> => {\n+    const response = await context.next();\n+    const origin = context.env.get('SIGNAL_SCANNER_PARENT_ORIGIN');\n+    if (origin && frameAncestorsPolicy(origin) === \"frame-ancestors 'none'\") {\n+        console.error('[SignalScanner] SIGNAL_SCANNER_PARENT_ORIGIN must be a single HTTPS origin.');\n+    }\n+    response.headers.append('Content-Security-Policy', frameAncestorsPolicy(origin));\n+    return response;\n+};\n*** Update File: README.md\n@@\n When assembled by the App Builder, these are configured for you (logo upload, chart\n title, and app name are injected at deploy time).\n*** End Patch"
+Tool execution failed: Error: Failed to find expected lines in c:\index\index-navigator.worktrees\build-a-standalone-responsive-deriv-market-signa\README.md:
+When assembled by the App Builder, these are configured for you (logo upload, chart
+title, and app name are injected at deploy time).
+
+Search code
+Completed with input: {
+  "query": "\"wss://ws.derivws.com/websockets/v3\"",
+  "perPage": 5,
+  "fields": [
+    "path",
+    "repository"
+  ]
+}
+
+Ran terminal command: Get-Content src\main.tsx -TotalCount 70; Get-Content README.md -Tail 55; git status --short; git diff --check
+
+"Search" failed
+Tool execution failed: rg: C:\Users\alexo\AppData\Local\Temp\WinSAT: Access is denied. (os error 5)
+
+Get file or directory contents
+Completed with input: {
+  "owner": "deriv-com",
+  "repo": "deriv-api",
+  "path": "README.md"
+}
+
+Get file or directory contents
+Completed with input: {
+  "owner": "deriv-com",
+  "repo": "deriv-api",
+  "path": "docs"
+}
+
+Fetched [https://developers.deriv.com/docs/data/ticks/](https://developers.deriv.com/docs/data/ticks/)
+Completed with input: https://developers.deriv.com/docs/data/ticks/
+
+Fetched [https://developers.deriv.com/docs/data/active-symbols/](https://developers.deriv.com/docs/data/active-symbols/)
+Completed with input: https://developers.deriv.com/docs/data/active-symbols/
+
+Read [](), lines 1 to 160
+Completed with input: {
+  "path": "C:\\Users\\alexo\\AppData\\Local\\Temp\\1791543343640-copilot-tool-output-bbd35cf35d074aa099e2bd2251463e66.txt",
+  "view_range": [
+    1,
+    160
+  ]
+}
+
+Edit []()
+
+"Apply Patch" failed
+Completed with input: "*** Begin Patch\n*** Update File: README.md\n@@\n When assembled by the App Builder, these are configured for you (logo, primary color,\n font, and app name are injected at deploy time).\n+\n+## Standalone Deriv Signal Scanner (`/signals`)\n+\n+This repository also builds a small, independent, responsive market scanner at\n+`/signals`. The route bypasses the authenticated bot shell and requests only public\n+tick data. It never asks for an account login or API token.\n+\n+The scanner connects to Deriv's documented WebSocket endpoint\n+`wss://ws.derivws.com/websockets/v3?app_id=...`, fetches active symbols with\n+`active_symbols`, then subscribes to real-time ticks with `ticks_history` and\n+`subscribe: 1`. The supported Volatility 10/25/50/75/100 markets and their 1-second\n+variants are shown only when Deriv currently lists those symbols as active. It uses\n+the API-provided quote precision for display and last-digit extraction.\n+\n+Strategy calculations are descriptive, not predictions:\n+\n+- **Matches & Differs:** most and least frequent last digit in the latest 100 ticks.\n+- **Even & Odd:** even/odd digit counts in the latest 100 ticks.\n+- **Over & Under:** digits 5–9 (Over 4) versus 0–4 (Under 5) in the latest 100 ticks.\n+- **Rise & Fall:** rises, falls, and unchanged quotes in the latest 100 tick-to-tick\n+  changes (101 quotes).\n+\n+### Netlify setup and deployment\n+\n+1. Set the build environment variable `NEXT_PUBLIC_DERIV_APP_ID` to an app ID\n+   registered in the [Deriv developer dashboard](https://developers.deriv.com/dashboard/).\n+   An app ID is public; do not add an API token. Add the deployed host to the app's\n+   allowed/registered domain settings if required by your Deriv app configuration.\n+2. Deploy this repository on Netlify. [`netlify.toml`](./netlify.toml) builds `dist`,\n+   rewrites direct `/signals` visits to the SPA entry, and applies a route-scoped\n+   Netlify Edge Function for iframe policy. No additional packages are required.\n+3. Set the Netlify Edge Function environment variable\n+   `SIGNAL_SCANNER_PARENT_ORIGIN` to the one exact HTTPS origin permitted to embed\n+   the scanner (for example, `https://www.example.com` — replace this with the real\n+   parent site's origin, without a path or trailing slash). The function returns\n+   `Content-Security-Policy: frame-ancestors <that-origin>` for `/signals` only.\n+   Until a valid origin is set, it deliberately returns `frame-ancestors 'none'`;\n+   embedding is disabled rather than open to arbitrary sites. Ensure the variable is\n+   available to Netlify Edge Functions.\n+4. Build and deploy with `npm run build` / Netlify. Visit\n+   `https://<your-deployed-host>/signals`; embed that URL in an iframe on the allowed\n+   parent origin. Netlify's function adds only the dedicated CSP policy header and\n+   does not change other security headers. Do not add a conflicting `X-Frame-Options:\n+   DENY` or `SAMEORIGIN` header to this route; `X-Frame-Options` cannot allow a\n+   specific external origin. If a host or CDN sets it globally, exempt only `/signals`\n+   from that header and retain the other security headers unchanged.\n+\n+### Official Deriv API references\n+\n+- [Deriv WebSocket API connection setup](https://github.com/deriv-com/deriv-api#creating-a-websocket-connection)\n+  documents `wss://ws.derivws.com/websockets/v3?app_id=...`.\n+- [Active symbols](https://developers.deriv.com/docs/data/active-symbols/) documents\n+  querying currently available market symbols.\n+- [Ticks](https://developers.deriv.com/docs/data/ticks/) documents the subscribed\n+  live tick stream; [tick history](https://developers.deriv.com/docs/data/ticks-history/)\n+  documents historical tick requests.\n+\n+Run the focused scanner tests and production build with:\n+\n+```bash\n+npm test -- --runInBand src/pages/signals/analysis.test.ts\n+npm run type-check\n+npm run build\n+```\n*** End Patch"
+Tool execution failed: Failed to apply patch: Error: Failed to find expected lines in c:\index\index-navigator.worktrees\build-a-standalone-responsive-deriv-market-signa\README.md:
+When assembled by the App Builder, these are configured for you (logo, primary color,
+font, and app name are injected at deploy time).
+
+Read [](), line 60 to the end
+Completed with input: {
+  "path": "C:\\index\\index-navigator.worktrees\\build-a-standalone-responsive-deriv-market-signa\\README.md",
+  "view_range": [
+    60,
+    -1
+  ]
+}
+
+Edit []()
+
+Search code
+Completed with input: {
+  "query": "repo:deriv-com/deriv-api pip_size ticks_history",
+  "perPage": 10,
+  "fields": [
+    "path",
+    "repository",
+    "text_matches"
+  ]
+}
+
+Search code
+Completed with input: {
+  "query": "repo:deriv-com/deriv-api \"pip_size\" \"tick\"",
+  "perPage": 10,
+  "fields": [
+    "path",
+    "repository",
+    "text_matches"
+  ]
+}
+
+Ran terminal command: Test-Path node_modules; Test-Path C:\index\node_modules; Get-Command npm | Select-Object -ExpandProperty Source; Get-Content netlify\edge-functions\signals-frame-policy.ts; Get-Content src\pages\signals\analysis.ts -TotalCount 260
+
+Checked [](), [](), [](), no problems found
+
+Edit []()
+
+Edit []()
+
+Edit []()
+
+Edit []()
+
+Edit []()
+
+The scanner, strategy calculations, and route-scoped embed policy are implemented. I’ve also confirmed the API endpoint and `pip_size` behavior against Deriv’s official API materials; next I’m installing this checkout’s locked dependencies so I can run the focused tests, type-check, and production build.
+
+Ran terminal command: node --version; npm --version; npm ci
+
+Read [](), lines 1 to 220
+Completed with input: {
+  "path": "C:\\index\\index-navigator.worktrees\\build-a-standalone-responsive-deriv-market-signa\\src\\pages\\signals\\analysis.ts",
+  "view_range": [
+    1,
+    220
+  ]
+}
+
+Read [](), lines 60 to 180
+Completed with input: {
+  "path": "C:\\index\\index-navigator.worktrees\\build-a-standalone-responsive-deriv-market-signa\\jest.config.ts",
+  "view_range": [
+    60,
+    180
+  ]
+}
+
+Ran terminal command: git diff --check; git status --short; Get-Content .env.production
+
+Edit []()
+
+Read []()
+Completed with input: {
+  "path": "C:\\index\\index-navigator.worktrees\\build-a-standalone-responsive-deriv-market-signa\\jest.setup.ts"
+}
+
+Edit []()
+
+Read Terminal
+Completed with input: {
+  "shellId": "24",
+  "delay": 5
+}
+
+Edit []()
+
+Edit []()
+
+Ran terminal command: Test-Path node_modules\.bin\jest.cmd; Test-Path node_modules\.bin\rsbuild.cmd; Get-Process node -ErrorAction SilentlyContinue | Select-Object ProcessName,Id,CPU,StartTime
+
+List Shell Sessions
+Completed with input: {}
+
+Ran terminal command: Get-ChildItem "$env:LOCALAPPDATA\npm-cache\_logs" -File | Sort-Object LastWriteTime -Descending | Select-Object -First 3 Name,Length,LastWriteTime; Get-ChildItem node_modules -ErrorAction SilentlyContinue | Select-Object -First 5 Name
+
+Ran terminal command: Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -match 'npm|node.exe' } | Select-Object ProcessId,ParentProcessId,CommandLine | Format-List
+
+Reading Terminal
