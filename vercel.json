@@ -1,11 +1,36 @@
 {
-  "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm --filter @workspace/deriv-signal-scanner build",
-  "outputDirectory": "artifacts/deriv-signal-scanner/dist/public",
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "api-server": {
+      "root": "artifacts/api-server",
+      "framework": "express",
+      "entrypoint": "src/app.ts"
+    },
+    "deriv-signal-scanner": {
+      "root": "artifacts/deriv-signal-scanner",
+      "framework": "vite",
+      "buildCommand": "pnpm run build",
+      "outputDirectory": "dist/public"
+    },
+    "mockup-sandbox": {
+      "root": "artifacts/mockup-sandbox",
+      "framework": "vite",
+      "buildCommand": "pnpm run build",
+      "outputDirectory": "dist"
+    }
+  },
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "api-server"
+      }
+    },
+    {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": {
+        "service": "deriv-signal-scanner"
+      }
     }
   ]
 }
